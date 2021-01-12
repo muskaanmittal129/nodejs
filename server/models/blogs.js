@@ -22,6 +22,11 @@ const blogSchema = new schema({
     content:{
         type:String,
         required:true,
+    },
+    creator:{
+        type: schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     }
 },
 {timestamps:true,}

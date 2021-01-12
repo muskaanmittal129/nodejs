@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 const multer = require('multer');
 
-const blogRoutes = require('./routes/blog')
+const blogRoutes = require('./routes/blog');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -42,16 +43,18 @@ app.use( (req, res, next) => {
     next();
 });
 app.use('/blog', blogRoutes);
+app.use('/auth', authRoutes);
 
 app.use( (error, req, res, next) => {
     console.log(error);
    const status =  error.statusCode || 500;
    const message = error.message;
+   const data = error.data;
    console.log(message);
-   res.status(status).json({message:message});
+   res.status(status).json({message:message, data: data});
 
 } )
-
+ 
 mongoose
 .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.hiedf.mongodb.net/${process.env.MONGO_DEFAULT_DB}?retryWrites=true&w=majority`,
